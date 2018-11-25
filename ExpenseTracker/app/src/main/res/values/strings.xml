@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Expense Tracker</string>
+
+    <!-- Login Screen -->
+    <string name="login_loginbtn_label">Login</string>
+
+</resources>
