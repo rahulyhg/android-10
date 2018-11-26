@@ -1,7 +1,9 @@
 package com.saurabh.expensetracker.db.entities;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableField;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -11,8 +13,19 @@ public class UserCredential {
     @PrimaryKey
     private String userName;
     private String name;
-    private String gender;
-    private String dateOfBirth;
+    private String gender = "Male";
+    private ObservableField<String> dateOfBirth = new ObservableField<>();
+    private String password;
+    @Ignore
+    private String confirmPassword;
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 
     public String getName() {
         return name;
@@ -30,19 +43,12 @@ public class UserCredential {
         this.gender = gender;
     }
 
-    public String getDateOfBirth() {
+    public ObservableField<String> getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(ObservableField<String> dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    private String password;
-
-    public UserCredential(@NonNull String userName, String password) {
-        this.userName = userName;
-        this.password = password;
     }
 
     @NonNull
@@ -60,5 +66,13 @@ public class UserCredential {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean areAllFieldsEntered() {
+        if (userName == null || name == null || password == null || confirmPassword == null)
+            return false;
+        if (userName.isEmpty() || dateOfBirth.get().isEmpty() || name.isEmpty() || password.isEmpty() || confirmPassword.isEmpty())
+            return false;
+        return true;
     }
 }

@@ -3,67 +3,41 @@ package com.saurabh.expensetracker.viewmodel;
 import android.util.Log;
 
 import com.saurabh.expensetracker.DaggerFactory;
-import com.saurabh.expensetracker.db.DatabaseProvider;
 import com.saurabh.expensetracker.db.dao.UserCredentialDao;
 import com.saurabh.expensetracker.db.entities.UserCredential;
-import com.saurabh.expensetracker.di.component.DaggerAppContextComponent;
-import com.saurabh.expensetracker.di.interfaces.ApplicationContext;
-import com.saurabh.expensetracker.di.module.DatabaseProviderModule;
+import com.saurabh.expensetracker.enums.LoginEnum;
 
-import javax.inject.Inject;
-
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends ViewModel {
-    ObservableField<UserCredential> userCredentialObservable = new ObservableField();
+    public UserCredential userCredential;
 
-    public LoginViewModel() {
-        userCredentialObservable.set(new UserCredential("",""));
-    }
-
-    public String getUserName() {
-        return userCredentialObservable.get().getUserName();
-    }
-
-    public void setUserName(String userName) {
-        userCredentialObservable.get().setUserName(userName);
-    }
-
-    public String getPassword() {
-        return userCredentialObservable.get().getPassword();
-    }
-
-    public void setPassword(String password) {
-        userCredentialObservable.get().setPassword(password);
-    }
-
-    public void setFullName(String fullName) {
-        userCredentialObservable.get().setName(fullName);
-    }
-
-    public String getFullName() {
-        return userCredentialObservable.get().getName();
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        userCredentialObservable.get().setDateOfBirth(dateOfBirth);
-    }
-
-    public String getDateOfBirth() {
-        return userCredentialObservable.get().getDateOfBirth();
+    public void setUserCredential(UserCredential userCredential) {
+        this.userCredential = userCredential;
     }
 
     public void processLogin() {
-        Log.d("Awasthi","processLogin()::User Name = " + getUserName() + " : " + "Password = " + getPassword());
+        Log.d("Awasthi", "processLogin()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
         UserCredentialDao userCredentialDao = DaggerFactory.getAppContextComponent().getDatabaseProvider().getApplicationDatabase(DaggerFactory.getAppContextComponent().getContext()).userCredentialDao();
-        String password = userCredentialDao.getUserCredential(userCredentialObservable.get().getUserName()).getPassword();
+        String password = userCredentialDao.getUserCredential(userCredential.getUserName()).getPassword();
     }
 
-    public int processSignUp() {
-        Log.d("Awasthi","processSignUp()::User Name = " + userCredentialObservable.get().getUserName() + " : " + "Password = " + userCredentialObservable.get().getPassword());
+    public LoginEnum.SignUpErrorCodes processSignUp() {
+        Log.d("Awasthi", "processSignUp()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
+        String password = userCredential.getPassword();
+        String confirmPassword = userCredential.getConfirmPassword();
+        if(!userCredential.areAllFieldsEntered()) {
+            return LoginEnum.SignUpErrorCodes.EMPTY_FIELD;
+        }
+        if (!password.equals(confirmPassword)) {
+            return LoginEnum.SignUpErrorCodes.PASSWORD_CONFIRM_PASSWORD_NOT_MATCH;
+        }
         UserCredentialDao userCredentialDao = DaggerFactory.getAppContextComponent().getDatabaseProvider().getApplicationDatabase(DaggerFactory.getAppContextComponent().getContext()).userCredentialDao();
-        userCredentialDao.insertUserCredential(userCredentialObservable.get());
-        return 0;
+        userCredentialDao.insertUserCredential(userCredential);
+        return LoginEnum.SignUpErrorCodes.NO_ERROR;
+    }
+
+    public void setDateOfBirth(String format) {
+        userCredential.getDateOfBirth().set(format);
     }
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="signViewModel"
-            type="com.saurabh.expensetracker.viewmodel.LoginViewModel" />
+            type="com.saurabh.expensetracker.db.entities.UserCredential" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,7 +45,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={signViewModel.fullName}"
+                android:text="@={signViewModel.name}"
                 android:hint="Full Name" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:editable="false"
             android:text="Gender"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/radio_grp_gender"
@@ -115,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@={signViewModel.password}"
+                android:inputType="textPassword"
                 android:hint="Password" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,6 +132,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="@={signViewModel.confirmPassword}"
                 android:hint="Confirm Password" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -161,6 +163,8 @@
             android:inputType="date"
             android:textSize="18sp"
             android:typeface="normal"
+            android:focusable="false"
+            android:onClick="showDatePicker"
             android:text="@={signViewModel.dateOfBirth}"
             app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
             app:layout_constraintHorizontal_bias="0.392"
