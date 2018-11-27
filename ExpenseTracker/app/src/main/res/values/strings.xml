@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Expense Tracker</string>
 
-    <!-- Login Screen -->
+    <!-- Login & sign up Screen -->
     <string name="login_loginbtn_label">Login</string>
+    <string name="signup_error_password_confirm_password_mismatch"><![CDATA[Password & Confirm Password do not match!!]]></string>
+    <string name="signup_error_empty_fields">One or more fields are empty!!</string>
+    <string name="signup_error_no_error">Sign up successful!!</string>
+    <string name="signup_error_username_exists">User Name already exists!!</string>
+    <string name="login_error_empty_fields">Please enter user name and password both to login!!</string>
+    <string name="login_error_incorrect_user_name_or_password">User name or password is incorrect!!</string>
+    <string name="login_error_no_error">Login successful!!</string>
+    <string name="label_sign_up">Sign Up</string>
 
 </resources>

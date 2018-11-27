@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.saurabh.expensetracker.DaggerFactory;
 import com.saurabh.expensetracker.R;
 import com.saurabh.expensetracker.databinding.ActivitySignupBinding;
 import com.saurabh.expensetracker.db.entities.UserCredential;
@@ -37,34 +38,38 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivitySignupBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        UserCredential credential = new UserCredential();
+        UserCredential credential = DaggerFactory.getAppContextComponent().getUserCredential();
         binding.setSignViewModel(credential);
         viewModel.setUserCredential(credential);
         calendar = Calendar.getInstance();
     }
 
     public void processSignUp(View view) {
-        Observer observer = new Observer() {
+        Observer observer = new Observer<LoginEnum.SignUpErrorCodes>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(Object o) {
-                LoginEnum.SignUpErrorCodes errorCode = (LoginEnum.SignUpErrorCodes) o;
-                if (errorCode == LoginEnum.SignUpErrorCodes.PASSWORD_CONFIRM_PASSWORD_NOT_MATCH) {
-                    Toast.makeText(SignupActivity.this, "Password & Confirm Password do not match!!", Toast.LENGTH_SHORT).show();
-                } else if (errorCode == LoginEnum.SignUpErrorCodes.EMPTY_FIELD) {
-                    Toast.makeText(SignupActivity.this, "One or more fields are empty!!", Toast.LENGTH_SHORT).show();
-                } else if (errorCode == LoginEnum.SignUpErrorCodes.NO_ERROR) {
-                    Toast.makeText(SignupActivity.this, "Sign up successful!!", Toast.LENGTH_SHORT).show();
+            public void onNext(LoginEnum.SignUpErrorCodes errorCode) {
+                switch (errorCode) {
+                    case PASSWORD_CONFIRM_PASSWORD_NOT_MATCH:
+                        Toast.makeText(SignupActivity.this, getString(R.string.signup_error_password_confirm_password_mismatch), Toast.LENGTH_SHORT).show();
+                        break;
+                    case EMPTY_FIELD:
+                        Toast.makeText(SignupActivity.this, getString(R.string.signup_error_empty_fields), Toast.LENGTH_SHORT).show();
+                        break;
+                    case NO_ERROR:
+                        Toast.makeText(SignupActivity.this, getString(R.string.signup_error_no_error), Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                Toast.makeText(SignupActivity.this, "User Name already exists!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignupActivity.this, getString(R.string.signup_error_username_exists), Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -8,10 +8,6 @@
         <variable
             name="userCredential"
             type="com.saurabh.expensetracker.db.entities.UserCredential" />
-
-        <variable
-            name="loginViewModel"
-            type="com.saurabh.expensetracker.viewmodel.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:inputType="textPassword"
                 android:text="@={userCredential.password}" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +65,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:onClick="@{() -> loginViewModel.processLogin()}"
+            android:onClick="processLogin"
             android:text="@string/login_loginbtn_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

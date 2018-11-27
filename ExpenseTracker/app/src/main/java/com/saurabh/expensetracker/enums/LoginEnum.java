@@ -9,4 +9,10 @@ public class LoginEnum {
         EMPTY_FIELD,
         NO_ERROR
     }
+
+    public enum LoginErrorCodes {
+        EMPTY_FIELD,
+        INCORRECT_USER_NAME_OR_PASSWORD,
+        NO_ERROR
+    }
 }

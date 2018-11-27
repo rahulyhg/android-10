@@ -10,23 +10,31 @@ import com.saurabh.expensetracker.enums.LoginEnum;
 import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends ViewModel {
+    private static final String TAG = LoginViewModel.class.getSimpleName();
     public UserCredential userCredential;
 
     public void setUserCredential(UserCredential userCredential) {
         this.userCredential = userCredential;
     }
 
-    public void processLogin() {
-        Log.d("Awasthi", "processLogin()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
+    public LoginEnum.LoginErrorCodes processLogin() {
+        Log.d(TAG, "processLogin()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
+        if (userCredential.getUserName() == null || userCredential.getUserName().isEmpty() || userCredential.getPassword() == null || userCredential.getPassword().isEmpty()) {
+            return LoginEnum.LoginErrorCodes.EMPTY_FIELD;
+        }
         UserCredentialDao userCredentialDao = DaggerFactory.getAppContextComponent().getDatabaseProvider().getApplicationDatabase(DaggerFactory.getAppContextComponent().getContext()).userCredentialDao();
         String password = userCredentialDao.getUserCredential(userCredential.getUserName()).getPassword();
+        if (!userCredential.getPassword().equals(password)) {
+            return LoginEnum.LoginErrorCodes.INCORRECT_USER_NAME_OR_PASSWORD;
+        }
+        return LoginEnum.LoginErrorCodes.NO_ERROR;
     }
 
     public LoginEnum.SignUpErrorCodes processSignUp() {
-        Log.d("Awasthi", "processSignUp()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
+        Log.d(TAG, "processSignUp()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
         String password = userCredential.getPassword();
         String confirmPassword = userCredential.getConfirmPassword();
-        if(!userCredential.areAllFieldsEntered()) {
+        if (!userCredential.areAllFieldsEntered()) {
             return LoginEnum.SignUpErrorCodes.EMPTY_FIELD;
         }
         if (!password.equals(confirmPassword)) {
