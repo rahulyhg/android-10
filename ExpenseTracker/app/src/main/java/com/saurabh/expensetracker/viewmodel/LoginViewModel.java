@@ -32,11 +32,11 @@ public class LoginViewModel extends ViewModel {
 
     public LoginEnum.SignUpErrorCodes processSignUp() {
         Log.d(TAG, "processSignUp()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
-        String password = userCredential.getPassword();
-        String confirmPassword = userCredential.getConfirmPassword();
         if (!userCredential.areAllFieldsEntered()) {
             return LoginEnum.SignUpErrorCodes.EMPTY_FIELD;
         }
+        String password = userCredential.getPassword();
+        String confirmPassword = userCredential.getConfirmPassword();
         if (!password.equals(confirmPassword)) {
             return LoginEnum.SignUpErrorCodes.PASSWORD_CONFIRM_PASSWORD_NOT_MATCH;
         }
@@ -46,6 +46,6 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void setDateOfBirth(String format) {
-        userCredential.getDateOfBirth().set(format);
+        userCredential.setDateOfBirth(format);
     }
 }

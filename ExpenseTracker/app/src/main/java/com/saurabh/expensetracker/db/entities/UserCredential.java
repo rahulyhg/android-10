@@ -47,6 +47,10 @@ public class UserCredential {
         return dateOfBirth;
     }
 
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth.set(dateOfBirth);
+    }
+
     public void setDateOfBirth(ObservableField<String> dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
