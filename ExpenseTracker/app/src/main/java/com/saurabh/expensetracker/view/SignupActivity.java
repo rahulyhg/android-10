@@ -1,6 +1,7 @@
 package com.saurabh.expensetracker.view;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -32,14 +33,17 @@ public class SignupActivity extends AppCompatActivity {
 
     private LoginViewModel viewModel;
     private Calendar calendar;
+    private boolean isGoogleSignin;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isGoogleSignin = getIntent().getBooleanExtra(LoginViewModel.INTENT_EXTRA_GOOGLE_SIGNIN, false);
         ActivitySignupBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         UserCredential credential = DaggerFactory.getAppContextComponent().getUserCredential();
         binding.setSignViewModel(credential);
+        binding.setIsGoogleSignin(isGoogleSignin);
         viewModel.setUserCredential(credential);
         calendar = Calendar.getInstance();
     }
@@ -62,6 +66,11 @@ public class SignupActivity extends AppCompatActivity {
                         break;
                     case NO_ERROR:
                         Toast.makeText(SignupActivity.this, getString(R.string.signup_error_no_error), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                        if (isGoogleSignin) {
+                            intent = new Intent(SignupActivity.this, ContentActivity.class);
+                        }
+                        startActivity(intent);
                         finish();
                         break;
                 }
@@ -77,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         };
-        Observable.fromCallable(() -> viewModel.processSignUp()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
+        Observable.fromCallable(() -> viewModel.processSignUp(isGoogleSignin)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
     }
 
     private DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

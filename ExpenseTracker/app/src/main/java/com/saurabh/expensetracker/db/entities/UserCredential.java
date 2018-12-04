@@ -18,6 +18,24 @@ public class UserCredential {
     private String password;
     @Ignore
     private String confirmPassword;
+    private String email;
+    private String mobileNo;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -72,10 +90,10 @@ public class UserCredential {
         this.password = password;
     }
 
-    public boolean areAllFieldsEntered() {
-        if (userName == null || name == null || password == null || confirmPassword == null)
+    public boolean areAllFieldsEntered(boolean isGoogleSignin) {
+        if (userName == null || name == null || dateOfBirth.get() == null || (!isGoogleSignin && password == null) || (!isGoogleSignin && confirmPassword == null))
             return false;
-        if (userName.isEmpty() || dateOfBirth.get().isEmpty() || name.isEmpty() || password.isEmpty() || confirmPassword.isEmpty())
+        if (userName.isEmpty() || dateOfBirth.get().isEmpty() || name.isEmpty() || (!isGoogleSignin && password.isEmpty()) || (!isGoogleSignin && confirmPassword.isEmpty()))
             return false;
         return true;
     }

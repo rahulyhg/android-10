@@ -35,15 +35,16 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel viewModel;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 0;
+    private UserCredential mUserCredential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
-        UserCredential credential = DaggerFactory.getAppContextComponent().getUserCredential();
+        mUserCredential = DaggerFactory.getAppContextComponent().getUserCredential();
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        binding.setUserCredential(credential);
-        viewModel.setUserCredential(credential);
+        binding.setUserCredential(mUserCredential);
+        viewModel.setUserCredential(mUserCredential);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -53,8 +54,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void openSignupActivity(View view) {
+        openSignupActivity(false);
+    }
+
+    private void openSignupActivity(boolean isGoogleSignin) {
         Intent intent = new Intent(this, SignupActivity.class);
+        intent.putExtra(LoginViewModel.INTENT_EXTRA_GOOGLE_SIGNIN,isGoogleSignin);
         startActivity(intent);
+        finish();
     }
 
     public void openContentScreen() {
@@ -80,8 +87,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.d(TAG, "Login Successful");
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            mUserCredential.setName(account.getDisplayName());
+            mUserCredential.setEmail(account.getEmail());
+            openSignupActivity(true);
         } catch (ApiException e) {
             Log.d(TAG, "signInResult:failed code=" + e.getStatusCode());
         }

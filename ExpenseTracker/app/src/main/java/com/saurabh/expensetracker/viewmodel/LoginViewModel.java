@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 public class LoginViewModel extends ViewModel {
     private static final String TAG = LoginViewModel.class.getSimpleName();
     public UserCredential userCredential;
+    public static final String INTENT_EXTRA_GOOGLE_SIGNIN = "google_sign_in";
 
     public void setUserCredential(UserCredential userCredential) {
         this.userCredential = userCredential;
@@ -30,9 +31,9 @@ public class LoginViewModel extends ViewModel {
         return LoginEnum.LoginErrorCodes.NO_ERROR;
     }
 
-    public LoginEnum.SignUpErrorCodes processSignUp() {
+    public LoginEnum.SignUpErrorCodes processSignUp(boolean isGoogleSignin) {
         Log.d(TAG, "processSignUp()::User Name = " + userCredential.getUserName() + " : " + "Password = " + userCredential.getPassword());
-        if (!userCredential.areAllFieldsEntered()) {
+        if (!userCredential.areAllFieldsEntered(isGoogleSignin)) {
             return LoginEnum.SignUpErrorCodes.EMPTY_FIELD;
         }
         String password = userCredential.getPassword();
