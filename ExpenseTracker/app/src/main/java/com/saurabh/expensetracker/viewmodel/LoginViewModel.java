@@ -38,7 +38,7 @@ public class LoginViewModel extends ViewModel {
         }
         String password = userCredential.getPassword();
         String confirmPassword = userCredential.getConfirmPassword();
-        if (!password.equals(confirmPassword)) {
+        if (!isGoogleSignin && !password.equals(confirmPassword)) {
             return LoginEnum.SignUpErrorCodes.PASSWORD_CONFIRM_PASSWORD_NOT_MATCH;
         }
         UserCredentialDao userCredentialDao = DaggerFactory.getAppContextComponent().getDatabaseProvider().getApplicationDatabase(DaggerFactory.getAppContextComponent().getContext()).userCredentialDao();

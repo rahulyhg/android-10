@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityLoginBinding binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         mUserCredential = DaggerFactory.getAppContextComponent().getUserCredential();
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         binding.setUserCredential(mUserCredential);
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void openSignupActivity(boolean isGoogleSignin) {
         Intent intent = new Intent(this, SignupActivity.class);
-        intent.putExtra(LoginViewModel.INTENT_EXTRA_GOOGLE_SIGNIN,isGoogleSignin);
+        intent.putExtra(LoginViewModel.INTENT_EXTRA_GOOGLE_SIGNIN, isGoogleSignin);
         startActivity(intent);
         finish();
     }
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (resultCode) {
+        switch (requestCode) {
             case RC_SIGN_IN:
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
@@ -131,6 +131,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         };
-        Observable.fromCallable(()->viewModel.processLogin()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
+        Observable.fromCallable(() -> viewModel.processLogin()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(observer);
     }
 }

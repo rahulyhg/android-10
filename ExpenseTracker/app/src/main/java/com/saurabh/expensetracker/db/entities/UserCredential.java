@@ -91,9 +91,9 @@ public class UserCredential {
     }
 
     public boolean areAllFieldsEntered(boolean isGoogleSignin) {
-        if (userName == null || name == null || dateOfBirth.get() == null || (!isGoogleSignin && password == null) || (!isGoogleSignin && confirmPassword == null))
+        if (userName == null || name == null || email == null || mobileNo == null || dateOfBirth.get() == null || (!isGoogleSignin && password == null) || (!isGoogleSignin && confirmPassword == null))
             return false;
-        if (userName.isEmpty() || dateOfBirth.get().isEmpty() || name.isEmpty() || (!isGoogleSignin && password.isEmpty()) || (!isGoogleSignin && confirmPassword.isEmpty()))
+        if (userName.isEmpty() || dateOfBirth.get().isEmpty() || name.isEmpty() || email.isEmpty() || mobileNo.isEmpty() || (!isGoogleSignin && password.isEmpty()) || (!isGoogleSignin && confirmPassword.isEmpty()))
             return false;
         return true;
     }
