@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.OtpVerifierActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,7 +19,7 @@
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.SignupActivity" android:parentActivityName=".view.LoginActivity" android:label="@string/label_sign_up"/>
         <activity android:name=".view.ContentActivity" />
-        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.OtpVerifierActivity" />
     </application>
 
 </manifest>

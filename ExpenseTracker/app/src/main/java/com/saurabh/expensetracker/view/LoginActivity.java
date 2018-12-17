@@ -53,6 +53,12 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setOnClickListener(v -> processGoogleSignin());
     }
 
+    public void signInUsingOtp(View view) {
+        Intent intent = new Intent(this, OtpVerifierActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void openSignupActivity(View view) {
         openSignupActivity(false);
     }
